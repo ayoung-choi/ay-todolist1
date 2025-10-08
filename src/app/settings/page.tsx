@@ -7,12 +7,13 @@ import { Input } from '@/components/common/Input';
 import { Modal } from '@/components/common/Modal';
 import { Header } from '@/components/layout/Header';
 import { NotificationSettings } from '@/components/settings/NotificationSettings';
+import { WeeklyCalendar } from '@/components/calendar/WeeklyCalendar';
 import { TeamMember, Category } from '@/types/todo';
 import { dataMigration } from '@/lib/localStorage';
 import { generateId } from '@/lib/localStorage';
 
 export default function SettingsPage() {
-  const { settings, updateTeamMembers, updateCategories, updateNotificationSettings } = useTodoStore();
+  const { settings, weeklySchedule, updateTeamMembers, updateCategories, updateNotificationSettings, loadWeeklySchedule, updateWeeklySchedule } = useTodoStore();
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
@@ -25,7 +26,8 @@ export default function SettingsPage() {
   useEffect(() => {
     setTeamMembers(settings.teamMembers);
     setCategories(settings.categories);
-  }, [settings]);
+    loadWeeklySchedule();
+  }, [settings, loadWeeklySchedule]);
 
   const handleAddMember = () => {
     if (newMember.name.trim()) {
@@ -170,6 +172,13 @@ export default function SettingsPage() {
           onUpdate={updateNotificationSettings}
         />
       </div>
+
+      {/* Weekly Schedule Section */}
+      <WeeklyCalendar
+        teamMembers={teamMembers}
+        schedule={weeklySchedule}
+        onScheduleChange={updateWeeklySchedule}
+      />
 
       {/* Team Members Section */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">

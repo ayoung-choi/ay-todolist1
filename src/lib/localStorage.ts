@@ -3,6 +3,7 @@ import { Todo, AppSettings, Comment, Attachment } from '@/types/todo';
 const STORAGE_KEYS = {
   TODOS: 'skin-team-todos',
   SETTINGS: 'skin-team-settings',
+  WEEKLY_SCHEDULE: 'skin-team-weekly-schedule',
 } as const;
 
 // Helper functions for date serialization
@@ -228,6 +229,44 @@ export const dataMigration = {
     } catch (error) {
       console.error('Failed to import data:', error);
       return false;
+    }
+  },
+};
+
+// 주간 스케줄 저장소
+export interface WeeklySchedule {
+  [dayOfWeek: string]: {
+    [memberId: string]: number; // 멤버 ID -> 업무 번호 (1-6)
+  };
+}
+
+export const weeklyScheduleStorage = {
+  get: (): WeeklySchedule => {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.WEEKLY_SCHEDULE);
+      if (!data) {
+        return {};
+      }
+      return JSON.parse(data) as WeeklySchedule;
+    } catch (error) {
+      console.error('Failed to load weekly schedule:', error);
+      return {};
+    }
+  },
+
+  set: (schedule: WeeklySchedule): void => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.WEEKLY_SCHEDULE, JSON.stringify(schedule));
+    } catch (error) {
+      console.error('Failed to save weekly schedule:', error);
+    }
+  },
+
+  remove: (): void => {
+    try {
+      localStorage.removeItem(STORAGE_KEYS.WEEKLY_SCHEDULE);
+    } catch (error) {
+      console.error('Failed to remove weekly schedule:', error);
     }
   },
 };

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { Todo, TodoFilters, TodoSort, AppSettings, Comment, Attachment, NotificationSettings } from '@/types/todo';
-import { todoStorage, settingsStorage, commentStorage, attachmentStorage, generateId } from '@/lib/localStorage';
+import { todoStorage, settingsStorage, commentStorage, attachmentStorage, generateId, weeklyScheduleStorage, WeeklySchedule } from '@/lib/localStorage';
 import { startNotificationScheduler, stopNotificationScheduler } from '@/lib/notificationScheduler';
 
 interface TodoStore {
@@ -10,10 +10,12 @@ interface TodoStore {
   filters: TodoFilters;
   sort: TodoSort;
   selectedTodo: Todo | null;
+  weeklySchedule: WeeklySchedule;
   
   // Actions
   loadTodos: () => void;
   loadSettings: () => void;
+  loadWeeklySchedule: () => void;
   addTodo: (todo: Omit<Todo, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateTodo: (id: string, updates: Partial<Todo>) => void;
   deleteTodo: (id: string) => void;
@@ -35,6 +37,9 @@ interface TodoStore {
   updateCategories: (categories: AppSettings['categories']) => void;
   updateNotificationSettings: (notifications: NotificationSettings) => void;
   
+  // Weekly schedule actions
+  updateWeeklySchedule: (schedule: WeeklySchedule) => void;
+
   // Notification scheduler
   notificationSchedulerId: number | null;
   startNotifications: () => void;
@@ -61,6 +66,7 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
   filters: {},
   sort: { field: 'createdAt', direction: 'desc' },
   selectedTodo: null,
+  weeklySchedule: {},
   notificationSchedulerId: null,
 
   // Load data from localStorage
@@ -72,6 +78,11 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
   loadSettings: () => {
     const settings = settingsStorage.get();
     set({ settings });
+  },
+
+  loadWeeklySchedule: () => {
+    const weeklySchedule = weeklyScheduleStorage.get();
+    set({ weeklySchedule });
   },
 
   // Todo CRUD operations
@@ -296,6 +307,12 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
       set({ notificationSchedulerId: null });
       console.log('알림 스케줄러 중지됨');
     }
+  },
+
+  // Weekly schedule actions
+  updateWeeklySchedule: (schedule) => {
+    weeklyScheduleStorage.set(schedule);
+    set({ weeklySchedule: schedule });
   },
 
   // Computed values

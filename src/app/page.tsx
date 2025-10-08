@@ -7,7 +7,7 @@ import { useTodoStore } from '@/store/todoStore';
 import { registerServiceWorker } from '@/lib/serviceWorker';
 
 export default function Home() {
-  const { loadSettings, settings, startNotifications } = useTodoStore();
+  const { loadSettings, settings, startNotifications, loadWeeklySchedule } = useTodoStore();
 
   useEffect(() => {
     // 설정 로드
