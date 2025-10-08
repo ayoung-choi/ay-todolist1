@@ -6,7 +6,7 @@ const STORAGE_KEYS = {
 } as const;
 
 // Helper functions for date serialization
-const serializeDates = (obj: any): any => {
+const serializeDates = (obj: unknown): unknown => {
   if (obj instanceof Date) {
     return { __date: true, value: obj.toISOString() };
   }
@@ -21,9 +21,10 @@ const serializeDates = (obj: any): any => {
   return obj;
 };
 
-const deserializeDates = (obj: any): any => {
-  if (obj && typeof obj === 'object' && obj.__date) {
-    return new Date(obj.value);
+const deserializeDates = (obj: unknown): unknown => {
+  if (obj && typeof obj === 'object' && (obj as Record<string, unknown>).__date) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return new Date((obj as any).value);
   }
   if (Array.isArray(obj)) {
     return obj.map(deserializeDates);
@@ -43,7 +44,7 @@ export const todoStorage = {
       const data = localStorage.getItem(STORAGE_KEYS.TODOS);
       if (!data) return [];
       const parsed = JSON.parse(data);
-      return deserializeDates(parsed);
+      return deserializeDates(parsed) as Todo[];
     } catch (error) {
       console.error('Failed to load todos:', error);
       return [];
@@ -111,7 +112,7 @@ export const settingsStorage = {
         settingsStorage.set(defaultSettings);
         return defaultSettings;
       }
-      return JSON.parse(data);
+      return JSON.parse(data) as AppSettings;
     } catch (error) {
       console.error('Failed to load settings:', error);
       return {
@@ -202,10 +203,10 @@ export const dataMigration = {
     try {
       const { todos, settings } = JSON.parse(jsonData);
       if (todos && Array.isArray(todos)) {
-        todoStorage.save(deserializeDates(todos));
+        todoStorage.save(deserializeDates(todos) as Todo[]);
       }
       if (settings) {
-        settingsStorage.set(settings);
+        settingsStorage.set(settings as AppSettings);
       }
       return true;
     } catch (error) {

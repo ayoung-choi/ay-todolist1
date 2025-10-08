@@ -81,6 +81,8 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onClose }) => {
       category: formData.category,
       dueDate: formData.dueDate ? new Date(formData.dueDate) : undefined,
       status: formData.status,
+      comments: [],
+      attachments: [],
     };
 
     if (todo) {

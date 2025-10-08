@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 세예의원 피부팀 투두리스트
 
-## Getting Started
+세예의원 피부팀을 위한 협업 투두리스트 애플리케이션입니다.
 
-First, run the development server:
+## 🚀 주요 기능
 
+### 📋 핵심 기능
+- **할 일 관리**: 추가, 수정, 삭제, 완료 처리
+- **담당자 지정**: 피부팀원 프리셋 (세예, 김피부, 이에스테, 박관리)
+- **우선순위**: 4단계 (낮음/보통/높음/긴급) - 색상 코드화
+- **카테고리**: 커스텀 카테고리 (시술, 상담, 재고관리, 청소, 기타)
+- **마감일**: 날짜 선택기, 마감일 임박 시 하이라이트
+- **상태 관리**: 할 일/진행중/완료
+
+### 🎯 고급 기능
+- **드래그 앤 드롭**: 상태 간 이동 가능 (dnd-kit 사용)
+- **댓글 시스템**: 각 할 일에 댓글 추가/수정/삭제
+- **첨부파일**: 이미지, PDF, 문서 파일 업로드 (Base64)
+- **실시간 검색**: 제목/설명으로 즉시 검색
+- **고급 필터링**: 담당자, 카테고리, 상태, 우선순위별 필터
+- **다양한 정렬**: 생성일, 수정일, 마감일, 우선순위, 제목
+
+### 🎨 UI/UX
+- **반응형 디자인**: 모바일/태블릿/데스크톱 지원
+- **다크모드**: 자동 감지 및 지원
+- **직관적인 인터페이스**: 깔끔하고 사용하기 쉬운 UI
+
+### ⚙️ 설정 관리
+- **팀원 관리**: 팀원 추가/수정/삭제
+- **카테고리 관리**: 카테고리 추가/수정/삭제 (커스텀 색상)
+- **데이터 백업**: JSON 형태로 내보내기/가져오기
+
+## 🛠 기술 스택
+
+- **Frontend**: Next.js 15 + React 19 + TypeScript
+- **Styling**: Tailwind CSS v4
+- **State Management**: Zustand
+- **Drag & Drop**: @dnd-kit
+- **Date Handling**: date-fns
+- **Storage**: Local Storage API
+
+## 🚀 시작하기
+
+### 로컬 개발 환경 설정
+
+1. **저장소 클론**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/YOUR_USERNAME/skin-team-todolist.git
+cd skin-team-todolist
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **의존성 설치**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **개발 서버 실행**
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **브라우저에서 확인**
+   - [http://localhost:3000](http://localhost:3000) 접속
 
-## Learn More
+### 빌드 및 배포
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# 프로덕션 빌드
+npm run build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 프로덕션 서버 실행
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📱 사용 방법
 
-## Deploy on Vercel
+1. **첫 방문 시**: 기본 팀원과 카테고리가 자동 설정됩니다
+2. **할 일 추가**: "새 할 일" 버튼을 클릭하여 할 일을 추가합니다
+3. **상태 변경**: 드래그 앤 드롭으로 할 일의 상태를 변경합니다
+4. **필터링**: 검색창과 필터를 사용하여 할 일을 찾습니다
+5. **설정 관리**: 설정 페이지에서 팀원과 카테고리를 관리합니다
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔮 향후 계획 (Phase 2)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Supabase 연동**: 실시간 협업 기능
+- **인증 시스템**: 로그인/회원가입
+- **실시간 동기화**: 팀원 간 실시간 업데이트
+- **파일 저장소**: 클라우드 파일 업로드
+
+## 📄 라이선스
+
+이 프로젝트는 MIT 라이선스 하에 있습니다.
+
+## 🤝 기여하기
+
+버그 리포트나 기능 제안은 이슈를 통해 알려주세요!
+
+---
+
+**세예의원 피부팀을 위한 특별한 투두리스트입니다!** 🏥✨

@@ -27,7 +27,8 @@ export const TodoFilters: React.FC<TodoFiltersProps> = ({
     if (value === '') {
       delete newFilters[field];
     } else {
-      newFilters[field] = value as any;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (newFilters as any)[field] = value;
     }
     onFiltersChange(newFilters);
   };
@@ -225,7 +226,7 @@ export const TodoFilters: React.FC<TodoFiltersProps> = ({
               )}
               {filters.search && (
                 <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                  검색: "{filters.search}"
+                  검색: &quot;{filters.search}&quot;
                   <button
                     onClick={() => handleFilterChange('search', '')}
                     className="ml-1 hover:text-gray-600"

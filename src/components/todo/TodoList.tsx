@@ -20,7 +20,6 @@ import { Modal } from '@/components/common/Modal';
 import { TodoForm } from './TodoForm';
 import { TodoItem } from './TodoItem';
 import { TodoFilters } from './TodoFilters';
-import { getStatusLabel } from '@/lib/utils';
 
 interface TodoColumnProps {
   status: Todo['status'];

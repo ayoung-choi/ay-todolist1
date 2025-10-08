@@ -269,18 +269,30 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
 
     // Apply sorting
     filtered.sort((a, b) => {
-      let aValue: any = a[sort.field];
-      let bValue: any = b[sort.field];
+      let aValue: unknown = a[sort.field];
+      let bValue: unknown = b[sort.field];
 
       // Handle priority sorting
       if (sort.field === 'priority') {
-        const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 };
-        aValue = priorityOrder[aValue];
-        bValue = priorityOrder[bValue];
+        const priorityOrder: Record<string, number> = { urgent: 4, high: 3, medium: 2, low: 1 };
+        aValue = priorityOrder[aValue as string];
+        bValue = priorityOrder[bValue as string];
       }
 
-      if (aValue < bValue) return sort.direction === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sort.direction === 'asc' ? 1 : -1;
+      // Type-safe comparison
+      const aNum = Number(aValue);
+      const bNum = Number(bValue);
+      if (!isNaN(aNum) && !isNaN(bNum)) {
+        if (aNum < bNum) return sort.direction === 'asc' ? -1 : 1;
+        if (aNum > bNum) return sort.direction === 'asc' ? 1 : -1;
+        return 0;
+      }
+
+      // String comparison for other fields
+      const aStr = String(aValue);
+      const bStr = String(bValue);
+      if (aStr < bStr) return sort.direction === 'asc' ? -1 : 1;
+      if (aStr > bStr) return sort.direction === 'asc' ? 1 : -1;
       return 0;
     });
 
