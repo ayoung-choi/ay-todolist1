@@ -231,14 +231,67 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
           </div>
 
           {/* 테스트 알림 */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-            <Button
-              onClick={handleTestNotification}
-              variant="secondary"
-              className="w-full"
-            >
-              🔔 테스트 알림 보내기
-            </Button>
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
+            <h3 className="text-base font-medium text-gray-900 dark:text-white">
+              알림 테스트
+            </h3>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <Button
+                onClick={handleTestNotification}
+                variant="primary"
+                className="flex items-center justify-center space-x-2"
+              >
+                <span>🔔</span>
+                <span>기본 알림</span>
+              </Button>
+              
+              <Button
+                onClick={() => {
+                  if (permission !== 'granted') {
+                    alert('먼저 알림 권한을 허용해주세요.');
+                    return;
+                  }
+                  // 소리와 진동만 테스트
+                  if ('vibrate' in navigator) {
+                    navigator.vibrate([500, 200, 500]);
+                  }
+                  // Web Audio API로 소리 테스트
+                  try {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = 1000;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                  } catch (error) {
+                    console.error('소리 테스트 실패:', error);
+                  }
+                  alert('소리와 진동을 테스트했습니다!');
+                }}
+                variant="secondary"
+                className="flex items-center justify-center space-x-2"
+              >
+                <span>🔊</span>
+                <span>소리+진동</span>
+              </Button>
+            </div>
+            
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+              <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                💡 <strong>테스트 팁:</strong> 브라우저 탭이 백그라운드에 있을 때 알림이 더 잘 보입니다.
+              </p>
+            </div>
           </div>
         </>
       )}
