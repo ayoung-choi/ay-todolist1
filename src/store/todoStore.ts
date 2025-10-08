@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-import { Todo, TodoFilters, TodoSort, AppSettings, Comment, Attachment } from '@/types/todo';
+import { Todo, TodoFilters, TodoSort, AppSettings, Comment, Attachment, NotificationSettings } from '@/types/todo';
 import { todoStorage, settingsStorage, commentStorage, attachmentStorage, generateId } from '@/lib/localStorage';
+import { startNotificationScheduler, stopNotificationScheduler } from '@/lib/notificationScheduler';
 
 interface TodoStore {
   // State
@@ -32,6 +33,12 @@ interface TodoStore {
   // Settings actions
   updateTeamMembers: (teamMembers: AppSettings['teamMembers']) => void;
   updateCategories: (categories: AppSettings['categories']) => void;
+  updateNotificationSettings: (notifications: NotificationSettings) => void;
+  
+  // Notification scheduler
+  notificationSchedulerId: number | null;
+  startNotifications: () => void;
+  stopNotifications: () => void;
   
   // Computed values
   filteredTodos: () => Todo[];
@@ -40,10 +47,21 @@ interface TodoStore {
 export const useTodoStore = create<TodoStore>((set, get) => ({
   // Initial state
   todos: [],
-  settings: { teamMembers: [], categories: [] },
+  settings: { 
+    teamMembers: [], 
+    categories: [],
+    notifications: {
+      enabled: false,
+      notifyBeforeMinutes: [30, 60],
+      dailySummaryEnabled: true,
+      dailySummaryTime: '09:00',
+      soundEnabled: true,
+    },
+  },
   filters: {},
   sort: { field: 'createdAt', direction: 'desc' },
   selectedTodo: null,
+  notificationSchedulerId: null,
 
   // Load data from localStorage
   loadTodos: () => {
@@ -239,6 +257,45 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
   updateCategories: (categories) => {
     settingsStorage.updateCategories(categories);
     set({ settings: { ...get().settings, categories } });
+  },
+
+  updateNotificationSettings: (notifications) => {
+    const newSettings = { ...get().settings, notifications };
+    settingsStorage.set(newSettings);
+    set({ settings: newSettings });
+    
+    // 알림이 활성화되면 스케줄러 시작
+    if (notifications.enabled) {
+      get().stopNotifications();
+      get().startNotifications();
+    } else {
+      get().stopNotifications();
+    }
+  },
+
+  // Notification scheduler
+  startNotifications: () => {
+    const state = get();
+    if (state.notificationSchedulerId) {
+      return; // 이미 실행 중
+    }
+
+    const intervalId = startNotificationScheduler(
+      () => state.todos,
+      () => state.settings.notifications
+    );
+    
+    set({ notificationSchedulerId: intervalId });
+    console.log('알림 스케줄러 시작됨');
+  },
+
+  stopNotifications: () => {
+    const state = get();
+    if (state.notificationSchedulerId) {
+      stopNotificationScheduler(state.notificationSchedulerId);
+      set({ notificationSchedulerId: null });
+      console.log('알림 스케줄러 중지됨');
+    }
   },
 
   // Computed values

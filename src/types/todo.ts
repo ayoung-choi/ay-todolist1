@@ -54,8 +54,17 @@ export interface TodoSort {
   direction: 'asc' | 'desc';
 }
 
+export interface NotificationSettings {
+  enabled: boolean;
+  notifyBeforeMinutes: number[]; // [30, 60, 1440] = 30분 전, 1시간 전, 1일 전
+  dailySummaryEnabled: boolean;
+  dailySummaryTime: string; // "09:00" 형식
+  soundEnabled: boolean;
+}
+
 export interface AppSettings {
   teamMembers: TeamMember[];
   categories: Category[];
   defaultAssignee?: string;
+  notifications: NotificationSettings;
 }

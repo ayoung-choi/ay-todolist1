@@ -1,9 +1,27 @@
 'use client';
 
+import { useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { TodoList } from '@/components/todo/TodoList';
+import { useTodoStore } from '@/store/todoStore';
 
 export default function Home() {
+  const { loadSettings, settings, startNotifications } = useTodoStore();
+
+  useEffect(() => {
+    // 설정 로드
+    loadSettings();
+  }, [loadSettings]);
+
+  useEffect(() => {
+    // 알림이 활성화되어 있으면 스케줄러 시작
+    if (settings.notifications?.enabled) {
+      startNotifications();
+    }
+
+    // 컴포넌트 언마운트 시 정리는 필요 없음 (앱 전체에서 한 번만 실행)
+  }, [settings.notifications?.enabled, startNotifications]);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />

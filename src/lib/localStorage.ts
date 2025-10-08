@@ -108,6 +108,13 @@ export const settingsStorage = {
             { id: '4', name: '청소', color: '#8B5CF6' },
             { id: '5', name: '기타', color: '#6B7280' },
           ],
+          notifications: {
+            enabled: false,
+            notifyBeforeMinutes: [30, 60],
+            dailySummaryEnabled: true,
+            dailySummaryTime: '09:00',
+            soundEnabled: true,
+          },
         };
         settingsStorage.set(defaultSettings);
         return defaultSettings;
@@ -118,6 +125,13 @@ export const settingsStorage = {
       return {
         teamMembers: [],
         categories: [],
+        notifications: {
+          enabled: false,
+          notifyBeforeMinutes: [30, 60],
+          dailySummaryEnabled: true,
+          dailySummaryTime: '09:00',
+          soundEnabled: true,
+        },
       };
     }
   },

@@ -6,12 +6,13 @@ import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { Modal } from '@/components/common/Modal';
 import { Header } from '@/components/layout/Header';
+import { NotificationSettings } from '@/components/settings/NotificationSettings';
 import { TeamMember, Category } from '@/types/todo';
 import { dataMigration } from '@/lib/localStorage';
 import { generateId } from '@/lib/localStorage';
 
 export default function SettingsPage() {
-  const { settings, updateTeamMembers, updateCategories } = useTodoStore();
+  const { settings, updateTeamMembers, updateCategories, updateNotificationSettings } = useTodoStore();
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
@@ -158,6 +159,17 @@ export default function SettingsPage() {
             설정
           </h1>
         </div>
+
+      {/* Notification Settings Section */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          🔔 알림 설정
+        </h2>
+        <NotificationSettings
+          settings={settings.notifications}
+          onUpdate={updateNotificationSettings}
+        />
+      </div>
 
       {/* Team Members Section */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
