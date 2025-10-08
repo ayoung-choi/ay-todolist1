@@ -177,10 +177,10 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-base font-medium text-gray-900 dark:text-white">
-                  매일 요약 알림
+                  출근 전 알림 (매일 아침)
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  매일 정해진 시간에 오늘의 할 일을 알려줍니다
+                  매일 출근 30분 전에 오늘 담당 업무를 알려줍니다 (기본: 9:30)
                 </p>
               </div>
               <button

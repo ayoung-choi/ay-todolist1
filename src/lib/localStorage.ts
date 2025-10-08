@@ -93,26 +93,28 @@ export const settingsStorage = {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.SETTINGS);
       if (!data) {
-        // Default settings for skin team
+        // Default settings for 세예의원 피부팀
         const defaultSettings: AppSettings = {
           teamMembers: [
             { id: '1', name: '세예', role: '팀장' },
-            { id: '2', name: '김피부', role: '피부과 의사' },
-            { id: '3', name: '이에스테', role: '에스테티션' },
-            { id: '4', name: '박관리', role: '실장' },
+            { id: '2', name: '에스테1', role: '에스테티션' },
+            { id: '3', name: '에스테2', role: '에스테티션' },
+            { id: '4', name: '실장', role: '실장' },
+            { id: '5', name: '알바', role: '아르바이트' },
           ],
           categories: [
-            { id: '1', name: '시술', color: '#3B82F6' },
-            { id: '2', name: '상담', color: '#10B981' },
-            { id: '3', name: '재고관리', color: '#F59E0B' },
-            { id: '4', name: '청소', color: '#8B5CF6' },
-            { id: '5', name: '기타', color: '#6B7280' },
+            { id: '1', name: '오픈업무', color: '#3B82F6' },
+            { id: '2', name: '마감업무', color: '#EF4444' },
+            { id: '3', name: '시술준비', color: '#10B981' },
+            { id: '4', name: '청소정리', color: '#8B5CF6' },
+            { id: '5', name: '재고관리', color: '#F59E0B' },
+            { id: '6', name: '기타', color: '#6B7280' },
           ],
           notifications: {
             enabled: false,
             notifyBeforeMinutes: [30, 60],
             dailySummaryEnabled: true,
-            dailySummaryTime: '09:00',
+            dailySummaryTime: '09:30', // 출근 30분 전 (10:00 출근)
             soundEnabled: true,
           },
         };
