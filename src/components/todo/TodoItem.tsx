@@ -8,7 +8,7 @@ import { Modal } from '@/components/common/Modal';
 import { TodoForm } from './TodoForm';
 import { TodoComments } from './TodoComments';
 import { TodoAttachments } from './TodoAttachments';
-import { cn, formatDate, formatDateOnly, getPriorityColor, getStatusColor, getPriorityLabel, isOverdue } from '@/lib/utils';
+import { cn, formatDate, formatDateTime, getPriorityColor, getStatusColor, getPriorityLabel, isOverdue } from '@/lib/utils';
 
 interface TodoItemProps {
   todo: Todo;
@@ -113,7 +113,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, isDragDisabled = false
                   <span className={cn(
                     isOverdue(todo.dueDate) && todo.status !== 'completed' && 'text-red-600 font-medium'
                   )}>
-                    {formatDateOnly(todo.dueDate)}
+                    {formatDateTime(todo.dueDate)}
                   </span>
                 </>
               )}
@@ -243,7 +243,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, isDragDisabled = false
             <div>
               <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">마감일</h4>
               <p className="text-sm text-gray-900 dark:text-white">
-                {todo.dueDate ? formatDateOnly(todo.dueDate) : '설정되지 않음'}
+                {todo.dueDate ? formatDateTime(todo.dueDate) : '설정되지 않음'}
               </p>
             </div>
           </div>

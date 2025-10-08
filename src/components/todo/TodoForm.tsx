@@ -5,7 +5,7 @@ import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { Textarea } from '@/components/common/Textarea';
 import { Select } from '@/components/common/Select';
-import { DatePicker } from '@/components/common/DatePicker';
+import { DateTimePicker } from '@/components/common/DateTimePicker';
 import { getPriorityLabel, getStatusLabel } from '@/lib/utils';
 
 interface TodoFormProps {
@@ -21,7 +21,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onClose }) => {
     assignee: '',
     priority: 'medium' as Todo['priority'],
     category: '',
-    dueDate: '',
+    dueDateTime: '',
     status: 'todo' as Todo['status'],
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -34,7 +34,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onClose }) => {
         assignee: todo.assignee,
         priority: todo.priority,
         category: todo.category,
-        dueDate: todo.dueDate ? todo.dueDate.toISOString().split('T')[0] : '',
+        dueDateTime: todo.dueDate ? todo.dueDate.toISOString().slice(0, 16) : '',
         status: todo.status,
       });
     } else {
@@ -79,7 +79,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onClose }) => {
       assignee: formData.assignee,
       priority: formData.priority,
       category: formData.category,
-      dueDate: formData.dueDate ? new Date(formData.dueDate) : undefined,
+      dueDate: formData.dueDateTime ? new Date(formData.dueDateTime) : undefined,
       status: formData.status,
       comments: [],
       attachments: [],
@@ -177,10 +177,11 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onClose }) => {
           options={statusOptions}
         />
 
-        <DatePicker
-          label="마감일"
-          value={formData.dueDate}
-          onChange={(e) => handleChange('dueDate', e.target.value)}
+        <DateTimePicker
+          label="마감일시"
+          value={formData.dueDateTime}
+          onChange={(e) => handleChange('dueDateTime', e.target.value)}
+          helperText="날짜와 시간을 모두 선택하세요"
         />
       </div>
 

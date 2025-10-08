@@ -23,10 +23,19 @@ export function formatDateOnly(date: Date): string {
   }).format(date);
 }
 
+export function formatDateTime(date: Date): string {
+  return new Intl.DateTimeFormat('ko-KR', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
+}
+
 export function isOverdue(date: Date): boolean {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return date < today;
+  const now = new Date();
+  return date < now;
 }
 
 export function getPriorityColor(priority: 'low' | 'medium' | 'high' | 'urgent'): string {
