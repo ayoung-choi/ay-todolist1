@@ -15,6 +15,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "세예의원 피부팀 투두리스트",
   description: "세예의원 피부팀을 위한 협업 투두리스트",
+  manifest: '/manifest.json',
+  themeColor: '#3B82F6',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: '세예 투두',
+  },
 };
 
 export default function RootLayout({

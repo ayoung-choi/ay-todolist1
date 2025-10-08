@@ -1,0 +1,25 @@
+{
+  "name": "세예의원 피부팀 투두리스트",
+  "short_name": "세예 투두",
+  "description": "세예의원 피부팀을 위한 협업 투두리스트",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/next.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["productivity", "business"],
+  "lang": "ko-KR"
+}

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { TodoList } from '@/components/todo/TodoList';
 import { useTodoStore } from '@/store/todoStore';
+import { registerServiceWorker } from '@/lib/serviceWorker';
 
 export default function Home() {
   const { loadSettings, settings, startNotifications } = useTodoStore();
@@ -11,6 +12,9 @@ export default function Home() {
   useEffect(() => {
     // 설정 로드
     loadSettings();
+    
+    // Service Worker 등록 (PWA용)
+    registerServiceWorker();
   }, [loadSettings]);
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NotificationSettings as NotificationSettingsType } from '@/types/todo';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
+import { PWAInstall } from './PWAInstall';
 import {
   isNotificationSupported,
   getNotificationPermission,
@@ -91,6 +92,9 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* PWA 설치 섹션 */}
+      <PWAInstall />
+
       {/* 권한 상태 표시 */}
       {permission !== 'granted' && (
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
@@ -287,10 +291,31 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
               </Button>
             </div>
             
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-              <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                💡 <strong>테스트 팁:</strong> 브라우저 탭이 백그라운드에 있을 때 알림이 더 잘 보입니다.
-              </p>
+            <div className="space-y-3">
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                <h4 className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-2">
+                  🔍 알림 상태 확인
+                </h4>
+                <div className="space-y-1 text-xs text-blue-800 dark:text-blue-300">
+                  <div>• 브라우저 지원: {isSupported ? '✅ 지원됨' : '❌ 지원 안됨'}</div>
+                  <div>• 권한 상태: {permission === 'granted' ? '✅ 허용됨' : permission === 'denied' ? '❌ 거부됨' : '⚠️ 대기중'}</div>
+                  <div>• 진동 지원: {'vibrate' in navigator ? '✅ 지원됨' : '❌ 지원 안됨'}</div>
+                  <div>• 오디오 지원: {typeof window !== 'undefined' && (window.AudioContext || // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (window as any).webkitAudioContext) ? '✅ 지원됨' : '❌ 지원 안됨'}</div>
+                </div>
+              </div>
+              
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                  💡 <strong>알림이 안 뜨는 이유:</strong>
+                </p>
+                <ul className="text-xs text-yellow-700 dark:text-yellow-300 mt-2 space-y-1">
+                  <li>• 권한이 거부됨 → 주소창 자물쇠 아이콘에서 허용</li>
+                  <li>• 브라우저 탭이 활성 상태 → 다른 앱 열기</li>
+                  <li>• 맥북 방해금지 모드 → 제어센터에서 해제</li>
+                  <li>• 핸드폰은 앱 설치 필요 (PWA)</li>
+                </ul>
+              </div>
             </div>
           </div>
         </>
