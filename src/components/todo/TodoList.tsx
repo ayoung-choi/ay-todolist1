@@ -22,6 +22,8 @@ import { TodoItem } from './TodoItem';
 import { TodoFilters } from './TodoFilters';
 import { QuickAddTemplates } from './QuickAddTemplates';
 import { QuickWorkButtons } from './QuickWorkButtons';
+import { WeeklyDatePicker } from '@/components/calendar/WeeklyDatePicker';
+import { isSameDay } from 'date-fns';
 
 interface TodoColumnProps {
   status: Todo['status'];
@@ -96,6 +98,7 @@ export const TodoList: React.FC = () => {
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [activeTodo, setActiveTodo] = useState<Todo | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -142,7 +145,21 @@ export const TodoList: React.FC = () => {
     setSort(newSort);
   };
 
-  const filteredAndSortedTodos = filteredTodos();
+  // 날짜별 필터링
+  const handleDateSelect = (date: Date | null) => {
+    setSelectedDate(date);
+  };
+
+  // 필터링된 할 일 가져오기
+  let filteredAndSortedTodos = filteredTodos();
+
+  // 선택된 날짜가 있으면 추가 필터링
+  if (selectedDate) {
+    filteredAndSortedTodos = filteredAndSortedTodos.filter(todo => {
+      if (!todo.dueDate) return false;
+      return isSameDay(new Date(todo.dueDate), selectedDate);
+    });
+  }
 
   // Group todos by status
   const todosByStatus = {
@@ -180,6 +197,12 @@ export const TodoList: React.FC = () => {
       {/* Quick Work Buttons */}
       <QuickWorkButtons />
 
+      {/* Weekly Date Picker */}
+      <WeeklyDatePicker
+        selectedDate={selectedDate}
+        onDateSelect={handleDateSelect}
+      />
+
       {/* Filters */}
       <TodoFilters
         filters={filters}
@@ -216,7 +239,10 @@ export const TodoList: React.FC = () => {
         title="새 할 일 만들기"
         size="lg"
       >
-        <TodoForm onClose={() => setIsCreateModalOpen(false)} />
+        <TodoForm 
+          onClose={() => setIsCreateModalOpen(false)} 
+          defaultDueDate={selectedDate || undefined}
+        />
       </Modal>
     </div>
   );

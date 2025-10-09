@@ -11,9 +11,10 @@ import { getPriorityLabel, getStatusLabel } from '@/lib/utils';
 interface TodoFormProps {
   todo?: Todo;
   onClose: () => void;
+  defaultDueDate?: Date;
 }
 
-export const TodoForm: React.FC<TodoFormProps> = ({ todo, onClose }) => {
+export const TodoForm: React.FC<TodoFormProps> = ({ todo, onClose, defaultDueDate }) => {
   const { addTodo, updateTodo, settings } = useTodoStore();
   const [formData, setFormData] = useState({
     title: '',
@@ -43,9 +44,10 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onClose }) => {
         ...prev,
         assignee: settings.defaultAssignee || settings.teamMembers[0]?.name || '',
         category: settings.categories[0]?.name || '',
+        dueDateTime: defaultDueDate ? defaultDueDate.toISOString().slice(0, 16) : '',
       }));
     }
-  }, [todo, settings]);
+  }, [todo, settings, defaultDueDate]);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
